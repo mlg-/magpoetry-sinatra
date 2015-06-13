@@ -1,16 +1,3 @@
-
-// My project includes:
-// AJAX with an API provided by Wordnik ("http://developer.wordnik.com/")
-// Creating/Modifying DOM elements (adding "magnets", scrambling them via iteration over an array of DOM elements)
-// Handling events (clicks, focusout)
-// Use of a closure (to count iterations of word creation without putting it in the global scope, to toggle
-// and find the value of Flarf mode).
-
-// This function does the majority of the work in this small app. It generates a random number
-// and maps that to an API call to Wordnik. If Flarf mode is on, some adjustments are made to
-// the API options, like lowering the corpus count of the word and in some cases using a more
-// obscure sebset of that part of speech. One array was created because the Wordnik API does not reliably
-// return articles.
 function randomWordGenerator(){
 		var randomNum = Math.floor((Math.random() * 4) + 1);
 
