@@ -5,6 +5,8 @@ require_relative '../app/models/word.rb'
 
 Dotenv.load
 
+Word.delete_all
+
 def parts_of_speech
   pos = ["noun",
         "adjective",
@@ -63,21 +65,21 @@ def get_random_words(word_type, dictionary_def, frequency, quantity)
 end
 
 def get_word_lists
-  nouns = get_random_words("noun", true, 7000, 500)
+  nouns = get_random_words("noun", true, 7000, 800)
   populate_database(nouns, "noun", false)
-  verbs = get_random_words("verb", true, 7000, 500)
+  verbs = get_random_words("verb", true, 7000, 800)
   populate_database(verbs, "verb", false)
-  adjectives = get_random_words("adjective", true, 7000, 500)
+  adjectives = get_random_words("adjective", true, 7000, 800)
   populate_database(adjectives, "adjective", false)
-  less_common_nouns = get_random_words("noun", true, 3000, 300)
+  less_common_nouns = get_random_words("noun", true, 3000, 400)
   populate_database(less_common_nouns, "noun", false)
-  less_common_verbs = get_random_words("verb", true, 3000, 300)
+  less_common_verbs = get_random_words("verb", true, 3000, 400)
   populate_database(less_common_verbs, "verb", false)
-  prepositions = get_random_words("preposition", true, 3000, 30)
+  prepositions = get_random_words("preposition", true, 3000, 400)
   populate_database(articles, "article", false)
 
   # flarf
-  idioms = get_random_words("idiom", false, 1000, 50)
+  idioms = get_random_words("idiom", false, 1000, 500)
   populate_database(idioms, "idiom", true)
   weird_verbs = get_random_words("verb", false, 500, 500)
   populate_database(weird_verbs, "verb", true)

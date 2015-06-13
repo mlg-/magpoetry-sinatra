@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/activerecord'
+require 'sinatra/json'
 require 'sinatra/reloader'
 require 'wordnik'
 
@@ -17,6 +18,18 @@ Dir[File.join(File.dirname(__FILE__), 'app', '**', '*.rb')].each do |file|
 end
 
 get '/' do
-  "Hello World"
   erb :index
+end
+
+get '/api/v1/word' do
+
+  # conditions are part of speech & flarf true/false
+  # params[:part_of_speech], params[:flarf_flag]
+
+  number_of_possible_choices = Word.where("part_of_speech = ? AND flarf = ?", params["part_of_speech"], params["flarf"] ).count
+  id_no = random_record_offset = rand(1..number_of_possible_choices)
+  # word = Word.find()
+  
+
+
 end
