@@ -77,19 +77,27 @@ def get_word_lists
   populate_database(articles, "article", false)
 
   # flarf
-  idioms = get_random_words("noun", false, 1000, 50)
+  idioms = get_random_words("idiom", false, 1000, 50)
   populate_database(idioms, "idiom", true)
   weird_verbs = get_random_words("verb", false, 500, 500)
   populate_database(weird_verbs, "verb", true)
   weird_nouns = get_random_words("noun", false, 500, 500)
   populate_database(weird_nouns, "noun", true)
   weird_adjectives = get_random_words("adjective", false, 500, 500)
-  populate_database(adjective, "adjective", true)
+  populate_database(weird_adjectives, "adjective", true)
  end
 
 def populate_database(collection, part_of_speech, flarf_flag)
-  collection.each do |word|
-    Word.new(word["word"], part_of_speech, flarf_flag)
+  new_words_array = []
+  collection.each do |item|
+    word_hash = {}
+    word_hash[:word] = item["word"]
+    word_hash[:part_of_speech] = part_of_speech
+    word_hash[:flarf] = flarf_flag
+    new_words_array << word_hash
+  end
+  new_words_array.each do |word|
+    Word.create(word)
   end
 end
 
