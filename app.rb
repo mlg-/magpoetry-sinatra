@@ -19,7 +19,7 @@ Dir[File.join(File.dirname(__FILE__), 'app', '**', '*.rb')].each do |file|
   also_reload file
 end
 
-def get_random_words(word_type) # dictionary_def, frequency)
+def get_random_words(word_type, dictionary_def, frequency, quantity)
 
   Wordnik.configure do |config|
       config.api_key = "#{ENV["API_KEY"]}"
@@ -27,11 +27,14 @@ def get_random_words(word_type) # dictionary_def, frequency)
 
   types_to_exclude = parts_of_speech
   types_to_exclude.delete(word_type)
-  types_to_exclude
 
-  # word_list = Wordnik.words.get_random_words(
-  #
-  # )
+  word_list = Wordnik.words.get_random_words(
+              :has_dictionary_def => "#{dictionary_def}",
+              :include_part_of_speech => "#{word_type}",
+              :exclue_part_of_speech => types_to_exclude,
+              :min_corpus_count => "#{frequency}",
+              :limit => "#{quantity}"
+  )
 
 end
 
@@ -68,7 +71,7 @@ end
 
 get '/' do
 
-  definition = get_random_words("noun")
+  nouns = get_random_words("noun", true, 7000, 500)
 
-  erb :index, locals: { definition: definition }
+  erb :index, locals: { nouns: nouns }
 end
