@@ -68,8 +68,6 @@ function randomWordGenerator(){
         }
       });
     }
-
-
 }
 
 var magnetCounter = (function(){

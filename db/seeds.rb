@@ -5,7 +5,7 @@ require_relative '../app/models/word.rb'
 
 Dotenv.load
 
-Word.delete_all
+# Word.delete_all
 
 def parts_of_speech
   pos = ["noun",
@@ -71,7 +71,8 @@ def get_word_lists
   populate_database(less_common_nouns, "noun", false)
   less_common_verbs = get_random_words("verb", true, 3000, 400)
   populate_database(less_common_verbs, "verb", false)
-  prepositions = get_random_words("preposition", true, 3000, 400)
+  prepositions = get_random_words("preposition", true, 1, 30)
+  populate_database(prepositions, "preposition", false)
   populate_database(articles, "article", false)
 
   # flarf
