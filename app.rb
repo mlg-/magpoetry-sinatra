@@ -22,10 +22,6 @@ get '/' do
 end
 
 get '/api/v1/word' do
-
-  # conditions are part of speech & flarf true/false
-  # params[:part_of_speech], params[:flarf_flag]
-
   number_of_possible_choices = Word.where("part_of_speech = ? AND flarf = ?", params["part_of_speech"], params["flarf"] ).count
   id_no = rand(1..number_of_possible_choices)
   word = Word.where("part_of_speech = ? AND flarf = ?", params["part_of_speech"], params["flarf"]).offset(id_no).limit(1)
