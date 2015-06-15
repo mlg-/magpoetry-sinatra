@@ -41,10 +41,6 @@ def articles
   articles = [{"word" => "a"},{"word"=> "an"},{"word" => "the"}]
 end
 
-def pronouns
-  pronouns
-end
-
 def get_random_words(word_type, dictionary_def, frequency, quantity)
 
   Wordnik.configure do |config|
@@ -80,7 +76,7 @@ def get_word_lists
 
   # flarf
   idioms = get_random_words("idiom", false, 1000, 500)
-  populate_database(idioms, "idiom", true)
+  populate_database(idioms, "noun", true)
   weird_verbs = get_random_words("verb", false, 500, 500)
   populate_database(weird_verbs, "verb", true)
   weird_nouns = get_random_words("noun", false, 500, 500)

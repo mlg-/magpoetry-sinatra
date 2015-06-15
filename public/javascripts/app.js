@@ -1,100 +1,77 @@
 function randomWordGenerator(){
-		var randomNum = Math.floor((Math.random() * 4) + 1);
+		var randomNum = Math.floor((Math.random() * 5) + 1);
 
 		var flarfFlag = flarfMode.getFlarf();
-		console.log(flarfFlag);
 		if (flarfFlag == true){
-			var dictionaryDef = false;
-			var frequency = 0;
-			var verbType = 'verb-intransitive';
-			var nounType = 'idiom';
+      flarf = true;
 		} else {
-			var dictionaryDef = true;
-			var frequency = 500;
-			var verbType = 'verb';
-			var nounType = 'noun';
+			flarf = false;
 		}
 
 		// verb
 		if (randomNum == 1){
-			var requestStr = "http://api.wordnik.com:80/v4/words.json/randomWord";
+			var requestStr = "/api/v1/word?part_of_speech=verb&flarf=" + flarf;
 		  $.ajax({
 		      type: "GET",
-		      withCredentials: false,
   				dataType: 'json',
   				url: requestStr,
-		      data: { hasDictionaryDef: dictionaryDef,
-		       				api_key: 'a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5',
-		      				minCorpusCount: frequency,
-		      				includePartOfSpeech: verbType
-		      			},
 		      success: function(data){
 		      	randomWordComplete(data);
-		      	console.log(data);
 		      }
 		  	});
 			}
 		// adjective
 		else if(randomNum == 2){
-			var requestStr = "http://api.wordnik.com:80/v4/words.json/randomWord";
-		  $.ajax({
+			var requestStr = "/api/v1/word?part_of_speech=adjective&flarf=" + flarf;
+      $.ajax({
 		      type: "GET",
-		      withCredentials: false,
   				dataType: 'json',
   				url: requestStr,
-		      data: { hasDictionaryDef: dictionaryDef,
-		       				api_key: 'a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5',
-		      				minCorpusCount: frequency, // this retrieves a word that is fairly common
-		      				includePartOfSpeech: 'adjective'
-		      			},
 		      success: function(data){
 		      	randomWordComplete(data);
-		      	console.log(data);
 		      }
 		  	});
 			}
 		// noun
 		else if(randomNum == 3){
-			var requestStr = "http://api.wordnik.com:80/v4/words.json/randomWord";
-		  $.ajax({
+      var requestStr = "/api/v1/word?part_of_speech=noun&flarf=" + flarf;
+      $.ajax({
 		      type: "GET",
-		      withCredentials: false,
   				dataType: 'json',
   				url: requestStr,
-		      data: { hasDictionaryDef: dictionaryDef,
-		       				api_key: 'a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5',
-		      				minCorpusCount: frequency, // this retrieves a word that is fairly common
-		      				includePartOfSpeech: nounType
-		      			},
 		      success: function(data){
 		      	randomWordComplete(data);
-		      	console.log(data);
 		      }
 		  	});
-		}
+			}
+    else if(randomNum == 4) {
+    // flarf is forced to false for articles & prepositions
+    var requestStr = "/api/v1/word?part_of_speech=article&flarf=false";
+    $.ajax({
+        type: "GET",
+        dataType: 'json',
+        url: requestStr,
+        success: function(data){
+          randomWordComplete(data);
+        }
+      });
+    }
+    else {
+    // flarf is forced to false for articles & prepositions
+    var requestStr = "/api/v1/word?part_of_speech=preposition&flarf=false";
+    $.ajax({
+        type: "GET",
+        dataType: 'json',
+        url: requestStr,
+        success: function(data){
+          randomWordComplete(data);
+        }
+      });
+    }
 
-		// articles, pronouns, prepositions, endings
-		else {
-			var fillerPartsOfSpeech = ["a", "an", "the", "he", "she", "they", "with", "under", "until",
-			  "since", "of", "it", "above", "over", "across", "aboard", "about", "for", "with", "to", "near",
-			   "before", "up", "beside", "from", "toward", "under", "concerning", "past", "above", "plus",
-			   "against", "at", "since", "considering", "over", "like", "excepting", "minus", "anti", "into",
-			   "in", "despite", "around", "but", "during", "versus", "via", "following", "along", "save",
-			   "round", "underneath", "per", "towards", "within", "among", "except", "by", "excluding",
-			   "on", "besides", "than", "beyond", "between", "after", "until", "onto", "of", "unlike",
-			   "outside", "down", "through", "below", "amid", "regarding", "inside", "off", "as", "opposite",
-			   "upon", "beneath", "behind", "without", "across", "s", "ed", "d"];
-		  var randomWord = fillerPartsOfSpeech[Math.floor(Math.random()*fillerPartsOfSpeech.length)];
-	  	randomWordComplete(randomWord);
-	  			      	console.log(randomWord);
 
-	  }
 }
 
-// This is a self-invoking function that uses a closure to make the iteration count
-// for magnet numbers in span ids available to other functions without being in the
-// global scope. Alain helped me figure this out in Piazza, so thanks to him for the
-// basic gist of this function.
 var magnetCounter = (function(){
    var magNumber = 0;
    return function increaseCounter(){
@@ -102,29 +79,18 @@ var magnetCounter = (function(){
    }
 })()
 
-// This function is called after the word has been generated in randomWordGenerator.
-// It parses the JSON (if that's where the word came from), and then creates a magnet
-// out of it.
 function randomWordComplete(data) {
-	if (typeof data == "object"){
-		var word = data.word;
-  } else {
-	  var word = data;
-	}
-	console.log(word);
+	var word = data[0].word;
 	var magNumber = magnetCounter();
   $('#words-container').prepend('<span class="magnet" id="magnet' + magNumber + '">' + word + '</span>');
   $('#magnet'+magNumber).draggable({ containment: "wrapper" });
 }
 
-// This function creates an input box in the middle top of the fridge so that the user
-// can create a title magnet of their choosing.
 function poemTitle(){
 	$('#words-container').prepend('<input type="text" class="poem-title">');
 	$('input.poem-title').focusout(poemTitleConversion);
 }
 
-// This function converts the user input into a specially-styled title magnet.
 function poemTitleConversion(title){
 	var userPoemTitle = $('input.poem-title').val();
 	$(this).replaceWith( '<span class="magnet" id="poem-title">' + userPoemTitle + '</span>' );
@@ -132,12 +98,10 @@ function poemTitleConversion(title){
 	 containment: "wrapper" });
 }
 
-// This function removes all the buttons so the user can start the game over.
 function startOver(){
 	$('#words-container').html("");
 }
 
-// This function scrambles the magnets to provide creative possibility for the user!
 function scrambleWords(){
   currentMagnetArray = $('.magnet').toArray();
 
@@ -152,8 +116,6 @@ function scrambleWords(){
   };
 }
 
-// This self invoking function uses a closure to allow other functions to
-// set and access the Flarf mode toggle.
 var flarfMode = (function(){
    var flarfFlag = false;
    return {
@@ -172,7 +134,6 @@ var flarfMode = (function(){
    }
 })()
 
-// Finally, these event listeners drive the user interaction.
 $('#random-word').click(randomWordGenerator);
 $('#scramble').click(scrambleWords);
 $('#start-over').click(startOver);

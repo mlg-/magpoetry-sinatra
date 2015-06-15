@@ -27,9 +27,7 @@ get '/api/v1/word' do
   # params[:part_of_speech], params[:flarf_flag]
 
   number_of_possible_choices = Word.where("part_of_speech = ? AND flarf = ?", params["part_of_speech"], params["flarf"] ).count
-  id_no = random_record_offset = rand(1..number_of_possible_choices)
-  # word = Word.find()
-  
-
-
+  id_no = rand(1..number_of_possible_choices)
+  word = Word.where("part_of_speech = ? AND flarf = ?", params["part_of_speech"], params["flarf"]).offset(id_no).limit(1)
+  json word
 end
