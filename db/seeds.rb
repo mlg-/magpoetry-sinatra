@@ -1,6 +1,5 @@
 require 'dotenv'
 require 'wordnik'
-require 'pry'
 require_relative '../app/models/word.rb'
 
 Dotenv.load
