@@ -1,7 +1,7 @@
 # Magnetic Poetry
 
-This app riffs off of a small script I made as a final project for CSCI-E3 at
-Harvard Extension School in Spring 2015. Rather than use JavaScript to make API
-calls (insecure/exposes the private key), it populates a local database with
-certain kinds of words (using the Wordnik API) and then has a really simple
-GET api for the JavaScript to access via ajax.
+# "The internet is your fridge." (thanks, Brian Fink, haha.)
+
+Building off a small JavaScript I wrote, this version of the magnetic poetry
+app has a database backing it. I practiced creating a seed file, setting up
+a simple GET API interface, and using Ajax to communicate with my db.
